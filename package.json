@@ -1,0 +1,19 @@
+{
+  "name": "invoicemake",
+  "version": "1.0.0",
+  "description": "Générateur de factures de garagiste",
+  "main": "html_maker.js",
+  "dependencies": {
+    "faker": "^5.1.0",
+    "html-to-pdfmake": "^2.1.2",
+    "jsdom": "^16.4.0",
+    "node-html-parser": "^2.0.1",
+    "pdfmake": "^0.1.69"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Alexandre Halopé",
+  "license": "ISC"
+}
