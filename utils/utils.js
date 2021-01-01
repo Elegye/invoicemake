@@ -1,6 +1,41 @@
-var faker = require('faker/locale/fr');
-const jsdom = require("jsdom");
+var faker = require('faker/locale/fr')
+var fs = require('fs')
+const jsdom = require("jsdom")
 const { JSDOM } = jsdom;
+const postcssJs = require("postcss-js");
+const postcss = require("postcss");
+
+function set_styles(dom){
+    var buffer = [];
+    dom.window.document.querySelectorAll("style").forEach((style, i) => {
+      const root = postcss.parse(style.textContent);
+      buffer.push((postcssJs.objectify(root)));
+    });
+
+    dom.window.document.querySelectorAll("p").forEach((el, i) => {
+      const root = postcss.parse(el.getAttribute("style"));
+      const className = new String("."+el.getAttribute("class"));
+      buffer.push({[className]:postcssJs.objectify(root)})
+    });
+
+    dom.window.document.querySelectorAll("div").forEach((el, i) => {
+      const root = postcss.parse(el.getAttribute("style"));
+      const className = new String("."+el.getAttribute("class"));
+      buffer.push({[className]:postcssJs.objectify(root)})
+    });
+
+    return dom, buffer;
+}
+
+function set_images(dom){
+    var images = dom.window.document.querySelectorAll("img");
+    images.forEach((image, i) => {
+      let src = image.getAttribute("src");
+      image.setAttribute("src", "data:image/png;base64,"+fs.readFileSync(src, "base64"));
+    });
+
+    return dom;
+}
 
 const getRandomInt = (max) => {
   return Math.floor(Math.random() * Math.floor(max-1)) + 1;
@@ -109,12 +144,16 @@ const set_item = (dom, number_items) => {
 }
 
 exports.set_data = function set_data(content, number_items){
-  const dom = new JSDOM(content);
+  var dom = new JSDOM(content);
+  var style = [];
   var immat, due_date, edition_date, desc;
   var node = {};
   let items = [];
 
-  if(dom.window.document.querySelectorAll("tbody.items") != undefined){
+  dom, style = set_styles(dom);
+  dom = set_images(dom);
+
+  if(dom.window.document.querySelectorAll("tbody.items").length != 0){
     var number_items = getRandomInt(25);
     console.info(`Generating ${number_items} items ...`)
     Object.assign(node, set_item(dom, number_items));
@@ -124,7 +163,7 @@ exports.set_data = function set_data(content, number_items){
     console.error("Aucune ligne d'opération disponible");
   }
 
-  if(dom.window.document.querySelectorAll("#car_immat") != undefined){
+  if(dom.window.document.querySelectorAll("#car_immat").length != 0){
     immat = car_immat();
     dom.window.document.querySelector("#car_immat").textContent = immat;
     //Object.assign(node.invoice, {car:{immat: immat}})
@@ -133,7 +172,7 @@ exports.set_data = function set_data(content, number_items){
     console.error("Aucune Immatriculation disponible");
   }
 
-  if(dom.window.document.querySelectorAll("#invoice_due_date") != undefined){
+  if(dom.window.document.querySelectorAll("#invoice_due_date").length != 0){
     due_date = invoice_due_date();
     dom.window.document.querySelector("#invoice_due_date").textContent = due_date;
     //Object.assign(node.invoice, {due_date: due_date})
@@ -142,7 +181,7 @@ exports.set_data = function set_data(content, number_items){
     console.error("Aucune date de facturation disponible");
   }
 
-  if(dom.window.document.querySelectorAll("#invoice_edition_date") != undefined){
+  if(dom.window.document.querySelectorAll("#invoice_edition_date").length != 0){
     edition_date = invoice_edition_date();
     dom.window.document.querySelector("#invoice_edition_date").textContent = invoice_edition_date();
     //Object.assign(node.invoice, {edition_date: edition_date})
@@ -151,7 +190,7 @@ exports.set_data = function set_data(content, number_items){
     console.error("Aucune date d'édition disponible");
   }
 
-  if(dom.window.document.querySelectorAll("#car_desc") != undefined){
+  if(dom.window.document.querySelectorAll("#car_desc").length != 0){
     desc = car_desc()
     dom.window.document.querySelector("#car_desc").textContent = desc;
   }
@@ -159,7 +198,7 @@ exports.set_data = function set_data(content, number_items){
     console.error("Aucune description véhicule disponible");
   }
 
-  if(dom.window.document.querySelectorAll("#invoice_total_ht") != undefined){
+  if(dom.window.document.querySelectorAll("#invoice_total_ht").length != 0){
     console.log(node.invoice.total)
     dom.window.document.querySelector("#invoice_total_ht").textContent = node.invoice.total;
   }
@@ -167,7 +206,7 @@ exports.set_data = function set_data(content, number_items){
     console.error("Aucun total facture disponible");
   }
 
-  if(dom.window.document.querySelectorAll("#invoice_total_ttc") != undefined){
+  if(dom.window.document.querySelectorAll("#invoice_total_ttc").length != 0){
     dom.window.document.querySelector("#invoice_total_ttc").textContent = (node.invoice.total*1.2).toFixed(2).toString();
   }
   else{
@@ -177,6 +216,7 @@ exports.set_data = function set_data(content, number_items){
   console.log("Sortie de la génération ...")
   return {
     html: dom.serialize(),
+    style: style,
     invoice:{
       items: node.invoice.items,
       due_date: due_date,

@@ -26,11 +26,14 @@ const createPdf = (templateName, numberDocument) => {
     completed_template = utils.set_data(content);
     console.log("Création du template en cours ...");
     var html = htmlToPdfMake(completed_template.html, {window: window});
-
+    var style = completed_template.style; //require("./templates/styles/"+templateName+".js").styles
     var docDefinition = {
       content: [
         html
-      ]
+      ],
+      styles:{
+        style
+      }
     };
 
     var pdfDocGenerator = pdfMake.createPdf(docDefinition);
