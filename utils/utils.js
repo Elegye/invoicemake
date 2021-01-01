@@ -14,14 +14,34 @@ function set_styles(dom){
 
     dom.window.document.querySelectorAll("p").forEach((el, i) => {
       const root = postcss.parse(el.getAttribute("style"));
-      const className = new String("."+el.getAttribute("class"));
-      buffer.push({[className]:postcssJs.objectify(root)})
+      let className = "";
+      if(el.getAttribute("class") != undefined){
+        className = new String("."+el.getAttribute("class"));
+      }
+      else if (el.getAttribute("id") != undefined) {
+        className = new String("#"+el.getAttribute("id"));
+      }{
+        className = undefined;
+      }
+      if(className != undefined){
+        buffer.push({[className]:postcssJs.objectify(root)})
+      }
     });
 
     dom.window.document.querySelectorAll("div").forEach((el, i) => {
       const root = postcss.parse(el.getAttribute("style"));
-      const className = new String("."+el.getAttribute("class"));
-      buffer.push({[className]:postcssJs.objectify(root)})
+      let className = "";
+      if(el.getAttribute("class") != undefined){
+        className = new String("."+el.getAttribute("class"));
+      }
+      else if (el.getAttribute("id") != undefined) {
+        className = new String("#"+el.getAttribute("id"));
+      }{
+        className = undefined;
+      }
+      if(className != undefined){
+        buffer.push({[className]:postcssJs.objectify(root)})
+      }
     });
 
     return dom, buffer;
