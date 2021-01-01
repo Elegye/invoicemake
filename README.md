@@ -48,3 +48,19 @@ Il suffit de créer un fichier html avec la structure suivante:
 _Attention, pour qu'un style soit pris en compte il faut obligatoirement y associer un id ou un nom de classe_
 
 En utilisant les id (uniques) et noms de classes (plusieurs entités), le générateur va le remplacer par des valeurs fictives.
+Quand c'est pas précisé c'est que c'est trop simple à comprendre :
+
+| Nom           | Description   |
+| ------------- |:------------- |
+| #car_immat    |  -|
+| #car_desc     | Marque et modèle     |
+| #invoice_edition_date | -- |
+| #invoice_due_date  | -- |
+| #invoice_total_ht  | -- |
+| #invoice_total_ttc  | -- |
+| .items  | Contient la liste de tous les items de la facture |
+| .item_ref  | -- |
+| .item_qte | -- |
+| .item_label  | -- |
+| .item_puht  | -- |
+| .item_ptht  | -- |

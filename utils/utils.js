@@ -13,7 +13,7 @@ function set_styles(dom){
     });
 
     dom.window.document.querySelectorAll("p").forEach((el, i) => {
-      const root = postcss.parse(el.getAttribute("style"));
+      const root = postcss.parse(el.getAttribute("style") == null ? "" : el.getAttribute("style"));
       let className = "";
       if(el.getAttribute("class") != undefined){
         className = new String("."+el.getAttribute("class"));
@@ -29,7 +29,7 @@ function set_styles(dom){
     });
 
     dom.window.document.querySelectorAll("div").forEach((el, i) => {
-      const root = postcss.parse(el.getAttribute("style"));
+      const root = postcss.parse(el.getAttribute("style") == null ? "" : el.getAttribute("style"));
       let className = "";
       if(el.getAttribute("class") != undefined){
         className = new String("."+el.getAttribute("class"));

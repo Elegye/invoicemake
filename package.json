@@ -10,7 +10,8 @@
     "node-html-parser": "^2.0.1",
     "pdfmake": "^0.1.69",
     "postcss": "^8.2.2",
-    "postcss-js": "^3.0.3"
+    "postcss-js": "^3.0.3",
+    "yargs": "^16.2.0"
   },
   "devDependencies": {},
   "scripts": {
