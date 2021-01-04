@@ -78,6 +78,11 @@ const invoice_edition_date = () => {
   return [d.getDate(), d.getMonth()+1, d.getFullYear()].map(n => n < 10 ? `0${n}` : `${n}`).join('/');
 }
 
+const invoice_number = () => {
+  var letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  return getRandomInt(9999999) + letters.charAt(getRandomInt(letters.length));
+}
+
 const car_desc = () => {
   return faker.vehicle.vehicle();
 }
@@ -259,10 +264,20 @@ exports.set_data = function set_data(content, number_items){
   else{
     console.error("Aucune adresse client disponible");
   }
+
+  if(dom.window.document.querySelectorAll("#numeroFacture").length != 0){
+    var invoice_number_value = invoice_number();
+    dom.window.document.querySelector("#numeroFacture").textContent = invoice_number_value;
+  }
+  else{
+    console.error("Aucun numéro de facture disponible");
+  }
+
   return {
     html: dom.serialize(),
     style: style,
     invoice:{
+      number: invoice_number_value,
       items: node.invoice.items,
       due_date: due_date,
       edition_date: edition_date,
