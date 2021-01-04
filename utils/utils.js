@@ -259,8 +259,6 @@ exports.set_data = function set_data(content, number_items){
   else{
     console.error("Aucune adresse client disponible");
   }
-
-  console.log("Sortie de la génération ...")
   return {
     html: dom.serialize(),
     style: style,

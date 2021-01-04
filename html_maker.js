@@ -20,11 +20,9 @@ if(!fs.existsSync("./pdfs/json")){
 }
 
 const createPdf = (templateName, numberDocument) => {
-  console.log("Lecture du template.")
   var content = fs.readFileSync('templates/'+templateName, {encoding:'utf8'});
   for(i=0; i <= numberDocument; i++){
     completed_template = utils.set_data(content);
-    console.log("Création du template en cours ...");
     var html = htmlToPdfMake(completed_template.html, {window: window});
     var style = completed_template.style; //require("./templates/styles/"+templateName+".js").styles
     var docDefinition = {
@@ -41,7 +39,6 @@ const createPdf = (templateName, numberDocument) => {
       fs.writeFileSync('pdfs/'+templateName+"_"+(i-1)+'_items.pdf', buffer);
       fs.writeFileSync('pdfs/json/'+templateName+"_"+(i-1)+'_items.json', JSON.stringify(completed_template.invoice, null, 4));
     })
-    console.log("JSON et PDF écrits.");
   }
 }
 
@@ -49,7 +46,7 @@ if(templateName == undefined){
   fs.readdirSync("./templates").forEach(file => {
     console.log("Création à partir du fichier : ", file);
     createPdf(file, numberDocument);
-    console.log(file, " DONE");
+    console.log(file, numberDocument + " DONE");
   });
 }
 
