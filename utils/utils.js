@@ -237,6 +237,13 @@ exports.set_data = function set_data(content, number_items){
     console.error("Aucun total TTC facture disponible");
   }
 
+  if(dom.window.document.querySelectorAll("#invoice_total_tva").length != 0){
+    dom.window.document.querySelector("#invoice_total_tva").textContent = ((node.invoice.total*1.2)-node.invoice.total).toFixed(2);
+  }
+  else{
+    console.error("Aucun total TVA facture disponible");
+  }
+
   if(dom.window.document.querySelectorAll("#client_name").length != 0){
     var client_name_value = client_name();
     dom.window.document.querySelector("#client_name").textContent = client_name_value;
