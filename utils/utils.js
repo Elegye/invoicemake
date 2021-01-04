@@ -61,6 +61,13 @@ const getRandomInt = (max) => {
   return Math.floor(Math.random() * Math.floor(max-1)) + 1;
 }
 
+const client_name = () => {
+  return faker.name.prefix() + " " + faker.name.firstName() + " " + faker.name.lastName();
+}
+const client_address = () => {
+  return faker.address.streetAddress();
+}
+
 const invoice_due_date = () => {
   const d = faker.date.soon();
   return [d.getDate(), d.getMonth()+1, d.getFullYear()].map(n => n < 10 ? `0${n}` : `${n}`).join('/');
@@ -186,7 +193,7 @@ exports.set_data = function set_data(content, number_items){
   if(dom.window.document.querySelectorAll("#car_immat").length != 0){
     immat = car_immat();
     dom.window.document.querySelector("#car_immat").textContent = immat;
-    //Object.assign(node.invoice, {car:{immat: immat}})
+    Object.assign(node.invoice, {car:{immat: immat}})
   }
   else{
     console.error("Aucune Immatriculation disponible");
@@ -195,7 +202,6 @@ exports.set_data = function set_data(content, number_items){
   if(dom.window.document.querySelectorAll("#invoice_due_date").length != 0){
     due_date = invoice_due_date();
     dom.window.document.querySelector("#invoice_due_date").textContent = due_date;
-    //Object.assign(node.invoice, {due_date: due_date})
   }
   else{
     console.error("Aucune date de facturation disponible");
@@ -203,8 +209,7 @@ exports.set_data = function set_data(content, number_items){
 
   if(dom.window.document.querySelectorAll("#invoice_edition_date").length != 0){
     edition_date = invoice_edition_date();
-    dom.window.document.querySelector("#invoice_edition_date").textContent = invoice_edition_date();
-    //Object.assign(node.invoice, {edition_date: edition_date})
+    dom.window.document.querySelector("#invoice_edition_date").textContent = edition_date;
   }
   else{
     console.error("Aucune date d'édition disponible");
@@ -219,7 +224,6 @@ exports.set_data = function set_data(content, number_items){
   }
 
   if(dom.window.document.querySelectorAll("#invoice_total_ht").length != 0){
-    console.log(node.invoice.total)
     dom.window.document.querySelector("#invoice_total_ht").textContent = node.invoice.total;
   }
   else{
@@ -233,6 +237,22 @@ exports.set_data = function set_data(content, number_items){
     console.error("Aucun total TTC facture disponible");
   }
 
+  if(dom.window.document.querySelectorAll("#client_name").length != 0){
+    var client_name_value = client_name();
+    dom.window.document.querySelector("#client_name").textContent = client_name_value;
+  }
+  else{
+    console.error("Aucun nom client disponible");
+  }
+
+  if(dom.window.document.querySelectorAll("#client_address").length != 0){
+    var client_address_value = client_address();
+    dom.window.document.querySelector("#client_address").textContent = client_address_value;
+  }
+  else{
+    console.error("Aucune adresse client disponible");
+  }
+
   console.log("Sortie de la génération ...")
   return {
     html: dom.serialize(),
@@ -241,8 +261,12 @@ exports.set_data = function set_data(content, number_items){
       items: node.invoice.items,
       due_date: due_date,
       edition_date: edition_date,
+      client:{
+        name: client_name_value,
+        address: client_address_value
+      },
       total_ht: node.invoice.total,
-      total_ttc: parseInt((node.invoice.total*1.2).toFixed(2)),
+      total_ttc: parseFloat((node.invoice.total*1.2).toFixed(2)),
       car:{
         immat: immat,
         desc: desc,

@@ -1,14 +1,22 @@
 <div style="width: 100%; height: 100%;" id="body">
-  <div id="en_tete" style="color:red">
+  <div id="en_tete" style="color:red; text-align:left;">
     <h2 class="middle">Garage Halopé</h2>
     <h5>ZAC La Massonnière</h5>
     <h5>72230 Moncé-en-Belin</h5>
   </div>
+  <div class="client" style="text-align:right;">
+    <table class="tableClient" style="width: auto;display: inline-table;">
+      <tr>
+        <td><div id="client_name"></div><br>
+        <div id="client_address"></div></td>
+      </tr>
+    </table>
+  </div>
 
   <div id="dataVoiture">
-    <span>Immatriculation: <span id="car_immat" style="color:red"></span> | Description : <span id="car_desc"></span></span>
-    <span>Date de la facture : <span id="invoice_edition_date"></span></span>
-    <span>Dû le : <span id="invoice_due_date"></span></span>
+    <span>Immatriculation: <span id="car_immat" style="color:red"></span> | Description : <span id="car_desc"></span></span><br>
+    <span>Date de la facture : <span id="invoice_edition_date"></span></span><br>
+    <span>Dû le : <span id="invoice_due_date"></span></span><br>
   </div>
 
 
@@ -30,12 +38,16 @@
       </tr>
     </tbody>
   </table>
-  <table style="float: right">
-    <tr>
-      <th>Total HT</th>
-      <td id="invoice_total_ht"></td>
-      <th>Total TTC</th>
-      <td id="invoice_total_ttc">After</td>
-    </tr>
-  </table>
+  <div class="tablePrix" style="text-align: right">
+    <table>
+      <tr>
+        <th>Total HT</th>
+        <td id="invoice_total_ht"></td>
+      </tr>
+      <tr>
+        <th>Total TTC</th>
+        <td id="invoice_total_ttc"></td>
+      </tr>
+    </table>
+  </div>
 </div>
